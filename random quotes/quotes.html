@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>quotes</title>
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
+    <style>
+        div, p, button {
+            padding: 0;
+            margin: 0
+        }
+
+        .clearfix:after {
+        }
+
+        {
+            content: "."
+        ; /**//*内容为“.”就是一个英文的句号而已。也可以不写。*/
+            display: block
+        ; /**//*加入的这个元素转换为块级元素。*/
+            clear: both
+        ; /**//*清除左右两边浮动。*/
+            visibility: hidden
+        ; /**//*可见度设为隐藏。注意它和display:none;是有区别的。visibility:hidden;仍然占据空间，只是看不到而已；*/
+            line-height: 0
+        ; /**//*行高为0；*/
+            height: 0
+        ; /**//*高度为0；*/
+            font-size: 0
+        ; /**//*字体大小为0；*/
+        }
+        .clearfix {
+        }
+
+        {
+            *zoom: 1
+        ;
+        } /**//*这是针对于IE6的，因为IE6不支持:after伪类，这个神奇的zoom:1让IE6的元素可以清除浮动来包裹内部元素。*/
+        body {
+            background-color: white;
+        }
+
+        .box {
+            width: 400px;
+            height: 300px;
+            border: 1px solid dimgray;
+            border-radius: 4px;
+            margin: 0 auto;
+        }
+
+        .content {
+            height: 80%;
+            padding: 10px 20px;
+        }
+
+        .author {
+            text-align: right;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .share a:nth-of-type(1) {
+            color: red;
+            margin-right: 10px;
+        }
+
+        .share a:nth-of-type(2) {
+            color: green;
+        }
+
+        .share {
+            padding: 0 20px;
+            float: left;
+        }
+
+        .new-quote {
+            float: right;
+            padding-right: 20px;
+        }
+    </style>
+
+    <script src="jquery.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            getQuote()
+            var colors = ['#16a085', '#27ae60', '#2c3e50', '#f39c12', '#e74c3c', '#9b59b6', '#FB6964', '#342224', "#472E32", "#BDBB99", "#77B1A9", "#73A857"];
+            $('#new-quote').on('click', function () {
+                getQuote()
+            });
+            function getQuote() {
+                function inIframe() {
+                    try {
+                        return window.self !== window.top;
+                    } catch (e) {
+                        return true;
+                    }
+                }
+
+                $.ajax({
+                    headers: {
+                        "X-Mashape-Key": "OivH71yd3tmshl9YKzFH7BTzBVRQp1RaKLajsnafgL2aPsfP9V",
+                        Accept: "application/json",
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    url: 'https://andruxnet-random-famous-quotes.p.mashape.com/cat=',
+                    success: function (r) {
+                        if (typeof r === 'string') {
+                            r = JSON.parse(r);
+                        }
+                        var currentQuote = r.quote;
+                        var currentAuthor = r.author;
+
+                        $('.author').text(currentAuthor);
+                        $('.quote').text(currentQuote)
+
+                    }
+                });
+
+            }
+        })
+    </script>
+</head>
+<body>
+<div class="box">
+    <div class="content">
+        <p class="quote">quote</p>
+        <p class="author">author</p>
+    </div>
+    <div class="btns clearfix">
+        <div class="share">
+            <a href="https://weibo.com"> <i class="fa fa-weibo"></i></a>
+            <a href="https://weixin.com"> <i class="fa fa-weixin"></i></a>
+        </div>
+        <div class="new-quote">
+            <button class="new btn btn-danger" value="newQuote" id="new-quote">new</button>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
